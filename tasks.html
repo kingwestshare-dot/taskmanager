@@ -11,10 +11,11 @@
   --text: #1a1916; --muted: #7a7870; --hint: #b0ada4;
   --accent: #2a6df4; --accent-bg: #eef3fe; --accent-text: #1a4db0;
   --success: #1a7a4a; --success-bg: #eaf5ee;
-  --danger: #c0392b; --danger-bg: #fdf0ee;
-  --warn-bg: #fef8e7;
+  --danger: #c0392b; --danger-bg: #fdf0ee; --danger-border: #f5b8b0;
+  --warn: #92600a; --warn-bg: #fef3dc; --warn-border: #f5d88a;
   --brad-bg: #f0eeff; --brad-text: #5b3fd4;
   --caroline-bg: #fff0f5; --caroline-text: #b03070;
+  --both-bg: #e8f8f0; --both-text: #1a7a4a;
   --urgent-bg: #fdf0ee; --urgent-text: #c0392b;
   --radius: 10px; --radius-sm: 6px;
 }
@@ -24,26 +25,27 @@
     --text: #f0ede8; --muted: #8a8780; --hint: #5a5854;
     --accent: #5b8ff9; --accent-bg: #1a2240; --accent-text: #5b8ff9;
     --success: #4caf7a; --success-bg: #0e2a1c;
-    --danger: #e07060; --danger-bg: #2a1410;
-    --warn-bg: #2a2010;
+    --danger: #e07060; --danger-bg: #2a1410; --danger-border: #6a2820;
+    --warn: #e0a030; --warn-bg: #2a1e08; --warn-border: #5a3a08;
     --brad-bg: #1e1a35; --brad-text: #a990f5;
     --caroline-bg: #2a1020; --caroline-text: #f080b0;
+    --both-bg: #0e2a1c; --both-text: #4caf7a;
     --urgent-bg: #2a1410; --urgent-text: #e07060;
   }
 }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
 .app { display: flex; min-height: 100vh; }
 
-/* Sidebar */
+/* ── Sidebar ── */
 .sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; display: flex; flex-direction: column; }
 .sidebar-logo { font-size: 17px; font-weight: 600; padding: 0 1.25rem 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem; }
 .sidebar-section { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--hint); padding: 0.5rem 1.25rem 0.25rem; }
-.list-item { display: flex; align-items: center; gap: 8px; padding: 7px 1.25rem; cursor: pointer; font-size: 13px; color: var(--muted); border-radius: 0; transition: background 0.1s; }
+.list-item { display: flex; align-items: center; gap: 8px; padding: 7px 1.25rem; cursor: pointer; font-size: 13px; color: var(--muted); transition: background 0.1s; }
 .list-item:hover { background: var(--bg); color: var(--text); }
 .list-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 500; }
 .list-item .count { margin-left: auto; font-size: 11px; background: var(--border); color: var(--muted); padding: 1px 6px; border-radius: 10px; }
 .list-item.active .count { background: var(--accent-bg); color: var(--accent); }
-.list-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; }
+.list-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .add-list-btn { margin: 0.5rem 1rem 0; padding: 6px 10px; border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; text-align: left; font-family: inherit; }
 .add-list-btn:hover { color: var(--text); border-color: var(--accent); }
 .sidebar-bottom { margin-top: auto; padding: 1rem 1.25rem 0; border-top: 1px solid var(--border); }
@@ -52,11 +54,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .sync-status.err { color: var(--danger); }
 .sync-status.syncing { color: var(--accent); }
 
-/* Main */
-.main { flex: 1; min-width: 0; padding: 2rem 2rem 4rem; max-width: 720px; }
+/* ── Main ── */
+.main { flex: 1; min-width: 0; padding: 2rem 2rem 4rem; max-width: 740px; }
 .main-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
 .main-title { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
 .list-color-dot { width: 10px; height: 10px; border-radius: 50%; }
+.view-badge { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--brad-bg); color: var(--brad-text); }
 
 /* Stats */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
@@ -64,7 +67,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .stat-num { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
 .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
 
-/* Add task */
+/* Add area */
 .add-area { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
 .add-row-1 { display: flex; gap: 8px; margin-bottom: 8px; }
 .add-row-1 input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; }
@@ -81,10 +84,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
 .filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); }
 
-/* Task list */
+/* Task items */
 .list { display: flex; flex-direction: column; gap: 5px; }
-.item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: opacity 0.15s; }
-.item.done { opacity: 0.4; }
+
+.item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: border-color 0.15s, background 0.15s; }
+.item.is-overdue { background: var(--danger-bg); border-color: var(--danger-border); }
+.item.is-urgent:not(.is-overdue) { background: var(--warn-bg); border-color: var(--warn-border); }
+.item.done { opacity: 0.4; background: var(--surface) !important; border-color: var(--border) !important; }
+
 .item-main { display: flex; align-items: flex-start; gap: 10px; padding: 11px 13px; }
 .check { width: 19px; height: 19px; border: 1.5px solid var(--border-strong); border-radius: 5px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; background: var(--bg); transition: all 0.1s; }
 .check:hover { border-color: var(--accent); }
@@ -99,15 +106,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .tag-urgent { background: var(--urgent-bg); color: var(--urgent-text); }
 .tag-brad { background: var(--brad-bg); color: var(--brad-text); }
 .tag-caroline { background: var(--caroline-bg); color: var(--caroline-text); }
+.tag-both { background: var(--both-bg); color: var(--both-text); }
 .tag-repeat { background: var(--accent-bg); color: var(--accent-text); }
 .due { font-size: 11px; color: var(--muted); }
-.due.overdue { color: var(--danger); font-weight: 500; }
+.due.overdue { color: var(--danger); font-weight: 600; }
 .item-actions { display: flex; gap: 2px; flex-shrink: 0; }
 .icon-btn { width: 28px; height: 28px; border: none; background: transparent; color: var(--hint); cursor: pointer; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-family: inherit; transition: all 0.1s; }
 .icon-btn:hover { background: var(--bg); color: var(--text); }
 .icon-btn.del:hover { color: var(--danger); }
 
-/* Edit form inline */
+/* Subtasks */
+.subtasks-area { border-top: 1px solid var(--border); padding: 8px 13px 10px 42px; }
+.subtask-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 13px; }
+.subtask-check { width: 15px; height: 15px; border: 1.5px solid var(--border-strong); border-radius: 3px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: var(--bg); }
+.subtask-check:hover { border-color: var(--accent); }
+.subtask-check.checked { background: var(--success-bg); border-color: var(--success); }
+.subtask-check svg { display: none; width: 9px; height: 9px; stroke: var(--success); stroke-width: 2.5; fill: none; }
+.subtask-check.checked svg { display: block; }
+.subtask-text { flex: 1; }
+.subtask-item.done .subtask-text { text-decoration: line-through; color: var(--muted); }
+.subtask-assign { font-size: 10px; padding: 1px 6px; border-radius: 10px; }
+.add-subtask-row { display: flex; gap: 6px; margin-top: 6px; }
+.add-subtask-row input { flex: 1; padding: 5px 9px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
+.add-subtask-row input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.add-subtask-row select { padding: 5px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
+
+/* Edit area */
 .edit-area { border-top: 1px solid var(--border); padding: 10px 13px; display: none; flex-direction: column; gap: 8px; }
 .edit-area.open { display: flex; }
 .edit-area input[type="text"] { width: 100%; padding: 7px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
@@ -117,6 +141,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .edit-row input[type="number"] { width: 52px; padding: 6px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
 .edit-actions { display: flex; gap: 6px; }
 
+/* Buttons */
 .btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.1s; white-space: nowrap; }
 .btn:hover { background: var(--bg); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -134,7 +159,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .modal-overlay.open { display: flex; }
 .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; width: 320px; }
 .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
-.modal input { width: 100%; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; margin-bottom: 1rem; }
+.modal input[type="text"] { width: 100%; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; margin-bottom: 1rem; }
 .modal input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
 .color-picker { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
@@ -148,7 +173,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .setup-box p { font-size: 12px; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.6; }
 .input-row { display: flex; gap: 8px; }
 .input-row input { flex: 1; padding: 7px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
-.input-row input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+/* Brad view banner */
+.brad-banner { background: var(--brad-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px; margin-bottom: 1rem; font-size: 13px; color: var(--brad-text); display: flex; align-items: center; gap: 8px; }
 
 @media (max-width: 600px) {
   .sidebar { width: 180px; }
@@ -156,10 +183,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 }
 @media (max-width: 480px) {
   .app { flex-direction: column; }
-  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; flex-direction: row; flex-wrap: wrap; overflow-x: auto; }
-  .sidebar-logo { padding: 0 1rem; border-bottom: none; margin-bottom: 0; display: flex; align-items: center; }
+  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 0.75rem 0; flex-direction: row; overflow-x: auto; }
+  .sidebar-logo { padding: 0 1rem; border-bottom: none; margin-bottom: 0; }
   .sidebar-section { display: none; }
-  .list-item { white-space: nowrap; }
   .sidebar-bottom { display: none; }
   .main { padding: 1rem; }
 }
@@ -169,11 +195,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="app">
 
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">My Tasks</div>
     <div class="sidebar-section">Lists</div>
     <div id="sidebar-lists"></div>
-    <button class="add-list-btn" onclick="openNewListModal()">+ New list</button>
+    <button class="add-list-btn" id="add-list-btn" onclick="openNewListModal()">+ New list</button>
     <div class="sidebar-bottom">
       <div class="sync-status" id="sync-status">not connected</div>
       <button class="btn" id="auth-btn" onclick="handleAuth()" style="width:100%;justify-content:center;font-size:12px;padding:6px;">Connect Drive</button>
@@ -182,28 +208,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
   <!-- Main -->
   <div class="main">
-    <div id="setup-box" class="setup-box">
-      <h2>Connect to Google Drive</h2>
-      <p>Paste your OAuth Client ID to sync across devices. <a href="#" onclick="toggleHelp();return false;" style="color:var(--accent)">How to get one →</a></p>
-      <div class="input-row">
-        <input type="text" id="client-id-input" placeholder="Paste Client ID..." />
-        <button class="btn primary btn-sm" onclick="saveClientId()">Save</button>
-      </div>
-    </div>
-    <div id="help-box" style="display:none;background:var(--warn-bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:1rem;font-size:12px;line-height:1.8;color:var(--text);">
-      1. <a href="https://console.cloud.google.com" target="_blank" style="color:var(--accent)">console.cloud.google.com</a> → create project<br>
-      2. APIs &amp; Services → Library → Enable <strong>Google Drive API</strong><br>
-      3. OAuth consent screen → External → fill name → Save<br>
-      4. Credentials → Create → OAuth client ID → Web app<br>
-      5. Authorized JS origins: your GitHub Pages URL<br>
-      6. Copy Client ID → paste above<br>
-      <button class="btn ghost" style="margin-top:8px;font-size:12px;" onclick="toggleHelp()">Close</button>
-    </div>
+
+    <div id="setup-area"></div>
 
     <div class="main-header">
       <div class="main-title">
         <div class="list-color-dot" id="active-dot"></div>
         <span id="active-title">All Tasks</span>
+        <span id="view-badge" style="display:none" class="view-badge"></span>
       </div>
       <div style="display:flex;gap:8px;">
         <button class="btn sm" id="rename-list-btn" style="display:none" onclick="openRenameModal()">Rename</button>
@@ -217,7 +229,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <div class="stat"><div class="stat-num" id="s-left">0</div><div class="stat-lbl">Remaining</div></div>
     </div>
 
-    <div class="add-area">
+    <div class="add-area" id="add-area">
       <div class="add-row-1">
         <input type="text" id="inp" placeholder="Add a task..." maxlength="200" />
         <button class="btn primary" onclick="addTask()">Add</button>
@@ -228,6 +240,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
           <option value="none">Unassigned</option>
           <option value="brad">Brad</option>
           <option value="caroline">Caroline</option>
+          <option value="both">Both</option>
         </select>
         <select id="add-urgent">
           <option value="no">Not urgent</option>
@@ -249,13 +262,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
     </div>
 
-    <div class="filters">
+    <div class="filters" id="filters-row">
       <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
       <button class="filter-btn" onclick="setFilter('active',this)">Active</button>
       <button class="filter-btn" onclick="setFilter('done',this)">Done</button>
       <button class="filter-btn" onclick="setFilter('urgent',this)">Urgent</button>
+      <button class="filter-btn" onclick="setFilter('overdue',this)">Overdue</button>
       <button class="filter-btn" onclick="setFilter('brad',this)">Brad</button>
       <button class="filter-btn" onclick="setFilter('caroline',this)">Caroline</button>
+      <button class="filter-btn" onclick="setFilter('both',this)">Both</button>
       <button class="filter-btn" onclick="setFilter('due',this)">Due today</button>
       <button class="filter-btn" onclick="setFilter('repeat',this)">Repeating</button>
     </div>
@@ -264,7 +279,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
-<!-- New/Rename list modal -->
+<!-- List modal -->
 <div class="modal-overlay" id="list-modal">
   <div class="modal">
     <h3 id="modal-title">New list</h3>
@@ -280,10 +295,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="toast" id="toast"></div>
 
 <script>
-const LSKEY='mytasks_v3', CIDKEY='mytasks_clientid', FIDKEY='mytasks_fileid';
+const LSKEY='mytasks_v4', CIDKEY='mytasks_clientid', FIDKEY='mytasks_fileid', FSHARED='mytasks_sharedfileid';
 const SCOPE='https://www.googleapis.com/auth/drive.appdata';
-const FILENAME='mytasks_data_v3.json';
+const SCOPE_READONLY='https://www.googleapis.com/auth/drive.readonly';
+const FILENAME='mytasks_data_v4.json';
 const COLORS=['#5b8ff9','#1a7a4a','#e07060','#8b5cf6','#e09030','#0e8080','#c03070','#888780'];
+
+const params = new URLSearchParams(location.search);
+const IS_BRAD = params.get('user') === 'brad';
 
 let data = { lists: [], tasks: [] };
 let activeList = 'all';
@@ -295,16 +314,83 @@ let modalMode = 'new';
 
 /* ── storage ── */
 function lsLoad() {
-  try {
-    const raw = localStorage.getItem(LSKEY);
-    if (raw) data = JSON.parse(raw);
-    if (!data.lists) data.lists = [];
-    if (!data.tasks) data.tasks = [];
-  } catch { data = { lists: [], tasks: [] }; }
-  driveFileId = localStorage.getItem(FIDKEY) || null;
+  try { const r = localStorage.getItem(LSKEY); if (r) data = JSON.parse(r); } catch {}
+  if (!data.lists) data.lists = [];
+  if (!data.tasks) data.tasks = [];
+  driveFileId = localStorage.getItem(IS_BRAD ? FSHARED : FIDKEY) || null;
 }
-function lsSave() { localStorage.setItem(LSKEY, JSON.stringify(data)); }
+function lsSave() { if (!IS_BRAD) localStorage.setItem(LSKEY, JSON.stringify(data)); }
 function getClientId() { return localStorage.getItem(CIDKEY) || ''; }
+
+/* ── setup UI ── */
+function renderSetupArea() {
+  if (IS_BRAD) {
+    const hasFile = localStorage.getItem(FSHARED);
+    if (!hasFile) {
+      document.getElementById('setup-area').innerHTML = `
+        <div class="setup-box">
+          <h2>Brad's view — connect to shared task file</h2>
+          <p>Ask the task owner to share their Drive file ID with you, then paste it below. You'll also need to connect your Google account.</p>
+          <div class="input-row" style="margin-bottom:8px;">
+            <input type="text" id="shared-file-id" placeholder="Paste shared Drive file ID..." />
+            <button class="btn primary" onclick="saveBradFileId()">Save</button>
+          </div>
+        </div>`;
+    } else {
+      document.getElementById('setup-area').innerHTML = '';
+    }
+    // hide add area
+    document.getElementById('add-area').style.display = 'none';
+    document.getElementById('add-list-btn').style.display = 'none';
+    document.getElementById('view-badge').style.display = '';
+    document.getElementById('view-badge').textContent = "Brad's view";
+    return;
+  }
+  const cid = getClientId();
+  if (!cid) {
+    document.getElementById('setup-area').innerHTML = `
+      <div class="setup-box">
+        <h2>Connect to Google Drive</h2>
+        <p>Paste your OAuth Client ID to sync across devices. <a href="#" onclick="toggleHelp();return false;" style="color:var(--accent)">How to get one →</a></p>
+        <div class="input-row">
+          <input type="text" id="client-id-input" placeholder="Paste Client ID..." />
+          <button class="btn primary" onclick="saveClientId()">Save</button>
+        </div>
+        <div id="help-box" style="display:none;margin-top:1rem;font-size:12px;line-height:1.8;color:var(--muted);">
+          1. <a href="https://console.cloud.google.com" target="_blank" style="color:var(--accent)">console.cloud.google.com</a> → create project<br>
+          2. APIs &amp; Services → Library → enable <strong>Google Drive API</strong><br>
+          3. OAuth consent screen → External → fill name → Save<br>
+          4. Credentials → OAuth client ID → Web application<br>
+          5. Authorized JS origins: your GitHub Pages URL<br>
+          6. Copy Client ID → paste above
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('setup-area').innerHTML = '';
+  }
+}
+
+function saveBradFileId() {
+  const v = document.getElementById('shared-file-id').value.trim();
+  if (!v) { toast('Paste the file ID first'); return; }
+  localStorage.setItem(FSHARED, v);
+  driveFileId = v;
+  renderSetupArea();
+  toast('File ID saved — click Connect Drive');
+}
+
+function saveClientId() {
+  const v = document.getElementById('client-id-input').value.trim();
+  if (!v) { toast('Paste a Client ID first'); return; }
+  localStorage.setItem(CIDKEY, v);
+  renderSetupArea();
+  toast('Saved — click Connect Drive');
+  loadGSI();
+}
+function toggleHelp() {
+  const el = document.getElementById('help-box');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
 
 /* ── lists ── */
 function openNewListModal() {
@@ -330,8 +416,7 @@ function openRenameModal() {
 function closeModal() { document.getElementById('list-modal').classList.remove('open'); }
 function renderColorPicker() {
   document.getElementById('color-picker').innerHTML = COLORS.map(c =>
-    `<div class="color-opt${c===editingListColor?' selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`
-  ).join('');
+    `<div class="color-opt${c===editingListColor?' selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
 }
 function pickColor(c) { editingListColor = c; renderColorPicker(); }
 function saveList() {
@@ -345,35 +430,32 @@ function saveList() {
     const lst = data.lists.find(l => l.id === activeList);
     if (lst) { lst.name = name; lst.color = editingListColor; }
   }
-  closeModal();
-  lsSave(); autoSync(); renderSidebar(); render();
+  closeModal(); lsSave(); autoSync(); render();
 }
 function deleteCurrentList() {
   if (!confirm('Delete this list and all its tasks?')) return;
   data.tasks = data.tasks.filter(t => t.listId !== activeList);
   data.lists = data.lists.filter(l => l.id !== activeList);
   activeList = 'all';
-  lsSave(); autoSync(); renderSidebar(); render();
+  lsSave(); autoSync(); render();
 }
 
 /* ── tasks ── */
 function addTask() {
+  if (IS_BRAD) return;
   const v = document.getElementById('inp').value.trim();
   if (!v) return;
   const repNum = parseInt(document.getElementById('rep-num').value) || 0;
   const repUnit = document.getElementById('rep-unit').value;
-  const listSel = document.getElementById('add-list-sel').value;
-  const task = {
-    id: Date.now(),
-    text: v,
-    listId: listSel || (activeList !== 'all' ? activeList : (data.lists[0] ? data.lists[0].id : 'default')),
+  const listSel = document.getElementById('add-list-sel').value || 'default';
+  data.tasks.unshift({
+    id: Date.now(), text: v, listId: listSel,
     assign: document.getElementById('add-assign').value,
     urgent: document.getElementById('add-urgent').value === 'yes',
     due: document.getElementById('due-inp').value,
     repeat: (repNum > 0 && repUnit !== 'none') ? { num: repNum, unit: repUnit } : null,
-    done: false
-  };
-  data.tasks.unshift(task);
+    done: false, subtasks: []
+  });
   lsSave(); autoSync(); render();
   document.getElementById('inp').value = '';
   document.getElementById('due-inp').value = '';
@@ -384,28 +466,52 @@ function addTask() {
 }
 
 function toggle(id) {
+  if (IS_BRAD) return;
   const t = data.tasks.find(x => x.id === id);
   if (!t) return;
   t.done = !t.done;
-  // if repeating and just completed, schedule next
   if (t.done && t.repeat && t.due) {
     const next = nextDueDate(t.due, t.repeat);
-    const newTask = { ...t, id: Date.now() + 1, done: false, due: next };
-    data.tasks.unshift(newTask);
-    toast('Next occurrence scheduled: ' + fmtDate(next));
+    data.tasks.unshift({ ...t, id: Date.now()+1, done: false, due: next, subtasks: [] });
+    toast('Next occurrence: ' + fmtDate(next));
   }
   lsSave(); autoSync(); render();
 }
 
-function nextDueDate(from, repeat) {
-  const d = new Date(from + 'T00:00:00');
-  if (repeat.unit === 'days') d.setDate(d.getDate() + repeat.num);
-  else if (repeat.unit === 'weeks') d.setDate(d.getDate() + repeat.num * 7);
-  else if (repeat.unit === 'months') d.setMonth(d.getMonth() + repeat.num);
-  return d.toISOString().slice(0, 10);
+function toggleSubtask(taskId, subId) {
+  if (IS_BRAD) return;
+  const t = data.tasks.find(x => x.id === taskId);
+  if (!t || !t.subtasks) return;
+  const s = t.subtasks.find(x => x.id === subId);
+  if (s) s.done = !s.done;
+  lsSave(); autoSync(); render();
+}
+
+function addSubtask(taskId) {
+  if (IS_BRAD) return;
+  const inp = document.getElementById('sub-inp-' + taskId);
+  const sel = document.getElementById('sub-assign-' + taskId);
+  const v = inp ? inp.value.trim() : '';
+  if (!v) return;
+  const t = data.tasks.find(x => x.id === taskId);
+  if (!t) return;
+  if (!t.subtasks) t.subtasks = [];
+  t.subtasks.push({ id: Date.now(), text: v, assign: sel ? sel.value : 'none', done: false });
+  lsSave(); autoSync();
+  inp.value = '';
+  render();
+}
+
+function delSubtask(taskId, subId) {
+  if (IS_BRAD) return;
+  const t = data.tasks.find(x => x.id === taskId);
+  if (!t) return;
+  t.subtasks = (t.subtasks || []).filter(s => s.id !== subId);
+  lsSave(); autoSync(); render();
 }
 
 function del(id) {
+  if (IS_BRAD) return;
   data.tasks = data.tasks.filter(x => x.id !== id);
   lsSave(); autoSync(); render();
 }
@@ -419,18 +525,26 @@ function openEdit(id) {
 }
 
 function saveEdit(id) {
+  if (IS_BRAD) return;
   const t = data.tasks.find(x => x.id === id);
   if (!t) return;
-  t.text = document.getElementById('edit-text-' + id).value.trim() || t.text;
-  t.assign = document.getElementById('edit-assign-' + id).value;
-  t.urgent = document.getElementById('edit-urgent-' + id).value === 'yes';
-  t.due = document.getElementById('edit-due-' + id).value;
-  t.listId = document.getElementById('edit-list-' + id).value;
-  const repNum = parseInt(document.getElementById('edit-rep-num-' + id).value) || 0;
-  const repUnit = document.getElementById('edit-rep-unit-' + id).value;
-  t.repeat = (repNum > 0 && repUnit !== 'none') ? { num: repNum, unit: repUnit } : null;
-  lsSave(); autoSync(); render();
-  toast('Task updated');
+  t.text = document.getElementById('edit-text-'+id).value.trim() || t.text;
+  t.assign = document.getElementById('edit-assign-'+id).value;
+  t.urgent = document.getElementById('edit-urgent-'+id).value === 'yes';
+  t.due = document.getElementById('edit-due-'+id).value;
+  t.listId = document.getElementById('edit-list-'+id).value;
+  const rn = parseInt(document.getElementById('edit-rep-num-'+id).value) || 0;
+  const ru = document.getElementById('edit-rep-unit-'+id).value;
+  t.repeat = (rn > 0 && ru !== 'none') ? { num: rn, unit: ru } : null;
+  lsSave(); autoSync(); render(); toast('Task updated');
+}
+
+function nextDueDate(from, repeat) {
+  const d = new Date(from + 'T00:00:00');
+  if (repeat.unit==='days') d.setDate(d.getDate()+repeat.num);
+  else if (repeat.unit==='weeks') d.setDate(d.getDate()+repeat.num*7);
+  else if (repeat.unit==='months') d.setMonth(d.getMonth()+repeat.num);
+  return d.toISOString().slice(0,10);
 }
 
 /* ── filter & render ── */
@@ -439,81 +553,86 @@ function setFilter(f, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active'); render();
 }
-
 function setActiveList(id) {
   activeList = id; filter = 'all';
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.filter-btn').classList.add('active');
-  renderSidebar(); render();
+  document.querySelectorAll('.filter-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+  render();
 }
-
-function todayStr() { return new Date().toISOString().slice(0, 10); }
-function timeStr() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+function todayStr() { return new Date().toISOString().slice(0,10); }
+function timeStr() { return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
 
 function getVisibleTasks() {
-  let vis = data.tasks;
-  if (activeList !== 'all') vis = vis.filter(t => t.listId === activeList);
   const today = todayStr();
-  if (filter === 'active') vis = vis.filter(t => !t.done);
-  else if (filter === 'done') vis = vis.filter(t => t.done);
-  else if (filter === 'urgent') vis = vis.filter(t => t.urgent);
-  else if (filter === 'brad') vis = vis.filter(t => t.assign === 'brad');
-  else if (filter === 'caroline') vis = vis.filter(t => t.assign === 'caroline');
-  else if (filter === 'due') vis = vis.filter(t => t.due && t.due <= today && !t.done);
-  else if (filter === 'repeat') vis = vis.filter(t => t.repeat);
+  let vis = data.tasks;
+  // Brad only sees his tasks
+  if (IS_BRAD) vis = vis.filter(t => t.assign === 'brad' || t.assign === 'both');
+  if (activeList !== 'all') vis = vis.filter(t => t.listId === activeList);
+  if (filter==='active') vis = vis.filter(t => !t.done);
+  else if (filter==='done') vis = vis.filter(t => t.done);
+  else if (filter==='urgent') vis = vis.filter(t => t.urgent);
+  else if (filter==='overdue') vis = vis.filter(t => t.due && t.due < today && !t.done);
+  else if (filter==='brad') vis = vis.filter(t => t.assign==='brad');
+  else if (filter==='caroline') vis = vis.filter(t => t.assign==='caroline');
+  else if (filter==='both') vis = vis.filter(t => t.assign==='both');
+  else if (filter==='due') vis = vis.filter(t => t.due && t.due <= today && !t.done);
+  else if (filter==='repeat') vis = vis.filter(t => t.repeat);
   return vis;
 }
 
-function renderSidebar() {
-  const countAll = data.tasks.filter(t => !t.done).length;
-  let html = `<div class="list-item${activeList==='all'?' active':''}" onclick="setActiveList('all')">
-    <div class="list-dot" style="background:#888"></div> All Tasks
-    <span class="count">${countAll}</span>
-  </div>`;
-  data.lists.forEach(l => {
-    const cnt = data.tasks.filter(t => t.listId === l.id && !t.done).length;
-    html += `<div class="list-item${activeList===l.id?' active':''}" onclick="setActiveList('${l.id}')">
-      <div class="list-dot" style="background:${l.color||'#888'}"></div>
-      ${esc(l.name)} <span class="count">${cnt}</span>
-    </div>`;
-  });
-  document.getElementById('sidebar-lists').innerHTML = html;
+function assignTag(assign) {
+  if (assign==='brad') return `<span class="tag tag-brad">Brad</span>`;
+  if (assign==='caroline') return `<span class="tag tag-caroline">Caroline</span>`;
+  if (assign==='both') return `<span class="tag tag-both">Both</span>`;
+  return '';
+}
 
-  // update active title
-  if (activeList === 'all') {
+function render() {
+  // sidebar
+  const countAll = IS_BRAD
+    ? data.tasks.filter(t => (t.assign==='brad'||t.assign==='both') && !t.done).length
+    : data.tasks.filter(t => !t.done).length;
+  let sideHtml = `<div class="list-item${activeList==='all'?' active':''}" onclick="setActiveList('all')">
+    <div class="list-dot" style="background:#888"></div>All Tasks<span class="count">${countAll}</span></div>`;
+  data.lists.forEach(l => {
+    const cnt = IS_BRAD
+      ? data.tasks.filter(t => t.listId===l.id && !t.done && (t.assign==='brad'||t.assign==='both')).length
+      : data.tasks.filter(t => t.listId===l.id && !t.done).length;
+    sideHtml += `<div class="list-item${activeList===l.id?' active':''}" onclick="setActiveList('${l.id}')">
+      <div class="list-dot" style="background:${l.color||'#888'}"></div>${esc(l.name)}<span class="count">${cnt}</span></div>`;
+  });
+  document.getElementById('sidebar-lists').innerHTML = sideHtml;
+
+  // active title
+  if (activeList==='all') {
     document.getElementById('active-title').textContent = 'All Tasks';
     document.getElementById('active-dot').style.background = '#888';
     document.getElementById('rename-list-btn').style.display = 'none';
     document.getElementById('delete-list-btn').style.display = 'none';
   } else {
-    const lst = data.lists.find(l => l.id === activeList);
-    if (lst) {
-      document.getElementById('active-title').textContent = lst.name;
-      document.getElementById('active-dot').style.background = lst.color || '#888';
-    }
-    document.getElementById('rename-list-btn').style.display = '';
-    document.getElementById('delete-list-btn').style.display = '';
+    const lst = data.lists.find(l => l.id===activeList);
+    if (lst) { document.getElementById('active-title').textContent = lst.name; document.getElementById('active-dot').style.background = lst.color||'#888'; }
+    if (!IS_BRAD) { document.getElementById('rename-list-btn').style.display=''; document.getElementById('delete-list-btn').style.display=''; }
   }
 
-  // update add-list select
+  // add-list-sel
   const sel = document.getElementById('add-list-sel');
-  const curVal = sel.value;
-  sel.innerHTML = data.lists.map(l => `<option value="${l.id}">${esc(l.name)}</option>`).join('') ||
-    '<option value="default">Default</option>';
-  if (activeList !== 'all') sel.value = activeList;
-  else if (curVal) sel.value = curVal;
-}
+  if (sel) {
+    const curVal = sel.value;
+    sel.innerHTML = `<option value="default">No list (default)</option>` +
+      data.lists.map(l => `<option value="${l.id}">${esc(l.name)}</option>`).join('');
+    if (activeList !== 'all') sel.value = activeList; else if (curVal) sel.value = curVal;
+  }
 
-function render() {
-  renderSidebar();
+  // stats
   const today = todayStr();
-  const vis = getVisibleTasks();
-  const allInView = activeList === 'all' ? data.tasks : data.tasks.filter(t => t.listId === activeList);
-  const done = allInView.filter(t => t.done).length;
-  document.getElementById('s-total').textContent = allInView.length;
-  document.getElementById('s-done').textContent = done;
-  document.getElementById('s-left').textContent = allInView.length - done;
+  const baseSet = IS_BRAD
+    ? data.tasks.filter(t => (t.assign==='brad'||t.assign==='both') && (activeList==='all' || t.listId===activeList))
+    : data.tasks.filter(t => activeList==='all' || t.listId===activeList);
+  document.getElementById('s-total').textContent = baseSet.length;
+  document.getElementById('s-done').textContent = baseSet.filter(t=>t.done).length;
+  document.getElementById('s-left').textContent = baseSet.filter(t=>!t.done).length;
 
+  const vis = getVisibleTasks();
   const el = document.getElementById('list');
   if (!vis.length) { el.innerHTML = '<div class="empty">Nothing here</div>'; return; }
 
@@ -521,77 +640,94 @@ function render() {
     const overdue = t.due && t.due < today && !t.done;
     const dueLabel = t.due ? `<span class="due${overdue?' overdue':''}">${overdue?'Overdue · ':''}${fmtDate(t.due)}</span>` : '';
     const urgTag = t.urgent ? `<span class="tag tag-urgent">urgent</span>` : '';
-    const assignTag = t.assign === 'brad' ? `<span class="tag tag-brad">Brad</span>` :
-                      t.assign === 'caroline' ? `<span class="tag tag-caroline">Caroline</span>` : '';
     const repTag = t.repeat ? `<span class="tag tag-repeat">every ${t.repeat.num} ${t.repeat.unit}</span>` : '';
-    const listName = activeList === 'all' ? (() => { const l = data.lists.find(x => x.id === t.listId); return l ? `<span style="font-size:11px;color:var(--muted);">${esc(l.name)}</span>` : ''; })() : '';
-    const repNumVal = t.repeat ? t.repeat.num : '';
-    const repUnitVal = t.repeat ? t.repeat.unit : 'none';
-    const listOpts = data.lists.map(l => `<option value="${l.id}"${l.id===t.listId?' selected':''}>${esc(l.name)}</option>`).join('') || `<option value="default">Default</option>`;
+    const listLabel = activeList==='all' ? (()=>{ const l=data.lists.find(x=>x.id===t.listId); return l?`<span style="font-size:11px;color:var(--muted);">${esc(l.name)}</span>`:''; })() : '';
+    const colorClass = t.done ? '' : (overdue ? ' is-overdue' : (t.urgent ? ' is-urgent' : ''));
+    const listOpts = `<option value="default">No list (default)</option>` + data.lists.map(l=>`<option value="${l.id}"${l.id===t.listId?' selected':''}>${esc(l.name)}</option>`).join('');
+    const repNum = t.repeat ? t.repeat.num : '';
+    const repUnit = t.repeat ? t.repeat.unit : 'none';
+    const subtasks = t.subtasks || [];
+    const subDone = subtasks.filter(s=>s.done).length;
+    const subCount = subtasks.length ? `<span style="font-size:11px;color:var(--muted);">${subDone}/${subtasks.length} subtasks</span>` : '';
+    const editBtns = IS_BRAD ? '' : `<button class="icon-btn" onclick="openEdit(${t.id})" title="Edit">✎</button><button class="icon-btn del" onclick="del(${t.id})" title="Delete">×</button>`;
 
-    return `<div class="item${t.done?' done':''}" id="item-${t.id}">
+    const subtaskHtml = `<div class="subtasks-area">
+      ${subtasks.map(s => `<div class="subtask-item${s.done?' done':''}">
+        <div class="subtask-check${s.done?' checked':''}" onclick="toggleSubtask(${t.id},${s.id})">
+          <svg viewBox="0 0 12 9"><polyline points="1,5 4,8 11,1"/></svg>
+        </div>
+        <span class="subtask-text">${esc(s.text)}</span>
+        ${s.assign && s.assign!=='none' ? `<span class="tag subtask-assign tag-${s.assign}">${s.assign==='both'?'Both':s.assign==='brad'?'Brad':'Caroline'}</span>` : ''}
+        ${IS_BRAD?'':`<button class="icon-btn del" style="width:20px;height:20px;font-size:12px;" onclick="delSubtask(${t.id},${s.id})" title="Delete">×</button>`}
+      </div>`).join('')}
+      ${IS_BRAD ? '' : `<div class="add-subtask-row">
+        <input type="text" id="sub-inp-${t.id}" placeholder="Add subtask..." maxlength="150" onkeydown="if(event.key==='Enter')addSubtask(${t.id})" />
+        <select id="sub-assign-${t.id}">
+          <option value="none">Unassigned</option>
+          <option value="brad">Brad</option>
+          <option value="caroline">Caroline</option>
+          <option value="both">Both</option>
+        </select>
+        <button class="btn sm" onclick="addSubtask(${t.id})">Add</button>
+      </div>`}
+    </div>`;
+
+    const editArea = IS_BRAD ? '' : `<div class="edit-area" id="edit-${t.id}">
+      <input type="text" id="edit-text-${t.id}" value="${esc(t.text)}" />
+      <div class="edit-row">
+        <select id="edit-list-${t.id}">${listOpts}</select>
+        <select id="edit-assign-${t.id}">
+          <option value="none"${!t.assign||t.assign==='none'?' selected':''}>Unassigned</option>
+          <option value="brad"${t.assign==='brad'?' selected':''}>Brad</option>
+          <option value="caroline"${t.assign==='caroline'?' selected':''}>Caroline</option>
+          <option value="both"${t.assign==='both'?' selected':''}>Both</option>
+        </select>
+        <select id="edit-urgent-${t.id}">
+          <option value="no"${!t.urgent?' selected':''}>Not urgent</option>
+          <option value="yes"${t.urgent?' selected':''}>Urgent</option>
+        </select>
+        <input type="date" id="edit-due-${t.id}" value="${t.due||''}" />
+      </div>
+      <div class="edit-row">
+        <span style="font-size:12px;color:var(--muted);">Repeat every</span>
+        <input type="number" id="edit-rep-num-${t.id}" min="1" max="365" value="${repNum}" placeholder="—" />
+        <select id="edit-rep-unit-${t.id}">
+          <option value="none"${repUnit==='none'?' selected':''}>— no repeat —</option>
+          <option value="days"${repUnit==='days'?' selected':''}>days</option>
+          <option value="weeks"${repUnit==='weeks'?' selected':''}>weeks</option>
+          <option value="months"${repUnit==='months'?' selected':''}>months</option>
+        </select>
+      </div>
+      <div class="edit-actions">
+        <button class="btn sm primary" onclick="saveEdit(${t.id})">Save</button>
+        <button class="btn sm ghost" onclick="openEdit(${t.id})">Cancel</button>
+      </div>
+    </div>`;
+
+    return `<div class="item${colorClass}${t.done?' done':''}" id="item-${t.id}">
       <div class="item-main">
         <div class="check${t.done?' checked':''}" onclick="toggle(${t.id})">
           <svg viewBox="0 0 12 9"><polyline points="1,5 4,8 11,1"/></svg>
         </div>
         <div class="item-body">
           <div class="item-text">${esc(t.text)}</div>
-          <div class="item-meta">${urgTag}${assignTag}${repTag}${dueLabel}${listName}</div>
+          <div class="item-meta">${urgTag}${assignTag(t.assign)}${repTag}${dueLabel}${subCount}${listLabel}</div>
         </div>
-        <div class="item-actions">
-          <button class="icon-btn" onclick="openEdit(${t.id})" title="Edit">✎</button>
-          <button class="icon-btn del" onclick="del(${t.id})" title="Delete">×</button>
-        </div>
+        <div class="item-actions">${editBtns}</div>
       </div>
-      <div class="edit-area" id="edit-${t.id}">
-        <input type="text" id="edit-text-${t.id}" value="${esc(t.text)}" />
-        <div class="edit-row">
-          <select id="edit-list-${t.id}">${listOpts}</select>
-          <select id="edit-assign-${t.id}">
-            <option value="none"${t.assign==='none'||!t.assign?' selected':''}>Unassigned</option>
-            <option value="brad"${t.assign==='brad'?' selected':''}>Brad</option>
-            <option value="caroline"${t.assign==='caroline'?' selected':''}>Caroline</option>
-          </select>
-          <select id="edit-urgent-${t.id}">
-            <option value="no"${!t.urgent?' selected':''}>Not urgent</option>
-            <option value="yes"${t.urgent?' selected':''}>Urgent</option>
-          </select>
-          <input type="date" id="edit-due-${t.id}" value="${t.due||''}" />
-        </div>
-        <div class="edit-row">
-          <span style="font-size:12px;color:var(--muted);">Repeat every</span>
-          <input type="number" id="edit-rep-num-${t.id}" min="1" max="365" value="${repNumVal}" placeholder="—" />
-          <select id="edit-rep-unit-${t.id}">
-            <option value="none"${repUnitVal==='none'?' selected':''}>— no repeat —</option>
-            <option value="days"${repUnitVal==='days'?' selected':''}>days</option>
-            <option value="weeks"${repUnitVal==='weeks'?' selected':''}>weeks</option>
-            <option value="months"${repUnitVal==='months'?' selected':''}>months</option>
-          </select>
-        </div>
-        <div class="edit-actions">
-          <button class="btn sm primary" onclick="saveEdit(${t.id})">Save</button>
-          <button class="btn sm ghost" onclick="openEdit(${t.id})">Cancel</button>
-        </div>
-      </div>
+      ${subtaskHtml}
+      ${editArea}
     </div>`;
   }).join('');
 }
 
 function fmtDate(d) {
-  const [y, m, day] = d.split('-');
-  return new Date(+y, +m-1, +day).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' });
+  const [y,m,day] = d.split('-');
+  return new Date(+y,+m-1,+day).toLocaleDateString('en-CA',{month:'short',day:'numeric'});
 }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 /* ── Drive ── */
-function saveClientId() {
-  const v = document.getElementById('client-id-input').value.trim();
-  if (!v) { toast('Paste a Client ID first'); return; }
-  localStorage.setItem(CIDKEY, v);
-  document.getElementById('setup-box').style.display = 'none';
-  toast('Client ID saved — click Connect Drive');
-  loadGSI();
-}
 function loadGSI() {
   const s = document.createElement('script');
   s.src = 'https://accounts.google.com/gsi/client';
@@ -602,27 +738,28 @@ function loadGSI() {
 function initGIS() {
   const cid = getClientId();
   if (!cid || !window.google) return;
+  const scope = IS_BRAD ? SCOPE_READONLY : SCOPE;
   tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: cid, scope: SCOPE,
+    client_id: cid, scope,
     callback: (resp) => {
       if (resp.error) { setSyncStatus('err', 'Auth failed'); return; }
       accessToken = resp.access_token;
       setSyncStatus('ok', 'Connected');
-      document.getElementById('auth-btn').textContent = 'Sync now';
+      document.getElementById('auth-btn').textContent = IS_BRAD ? 'Refresh' : 'Sync now';
       loadFromDrive();
     }
   });
 }
 function handleAuth() {
   if (!getClientId()) { toast('Add your Client ID first'); return; }
-  if (accessToken) { syncToDrive(); return; }
+  if (accessToken) { IS_BRAD ? loadFromDrive() : syncToDrive(); return; }
   if (!gsiReady || !window.google) {
     setSyncStatus('syncing', 'Loading Google...');
     let attempts = 0;
     const wait = setInterval(() => {
       attempts++;
-      if (gsiReady && window.google) { clearInterval(wait); if (!tokenClient) initGIS(); setTimeout(() => tokenClient.requestAccessToken(), 200); }
-      else if (attempts > 20) { clearInterval(wait); setSyncStatus('err', 'Could not load Google'); }
+      if (gsiReady && window.google) { clearInterval(wait); if (!tokenClient) initGIS(); setTimeout(()=>tokenClient.requestAccessToken(),200); }
+      else if (attempts>20) { clearInterval(wait); setSyncStatus('err', 'Could not load Google'); }
     }, 300);
     return;
   }
@@ -630,64 +767,88 @@ function handleAuth() {
   tokenClient.requestAccessToken();
 }
 async function driveReq(url, opts={}) {
-  const res = await fetch(url, { ...opts, headers: { Authorization: 'Bearer '+accessToken, ...(opts.headers||{}) } });
+  const res = await fetch(url, { ...opts, headers: { Authorization:'Bearer '+accessToken, ...(opts.headers||{}) } });
   if (!res.ok) throw new Error(res.status);
   return res.json();
 }
 async function findOrCreateFile() {
   if (driveFileId) return driveFileId;
+  if (IS_BRAD) throw new Error('No shared file ID set');
   const q = `name='${FILENAME}' and 'appDataFolder' in parents and trashed=false`;
   const list = await driveReq(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${encodeURIComponent(q)}&fields=files(id)`);
-  if (list.files && list.files.length) { driveFileId = list.files[0].id; localStorage.setItem(FIDKEY, driveFileId); return driveFileId; }
+  if (list.files && list.files.length) { driveFileId=list.files[0].id; localStorage.setItem(FIDKEY,driveFileId); return driveFileId; }
   const created = await driveReq('https://www.googleapis.com/drive/v3/files?fields=id', {
-    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: FILENAME, parents: ['appDataFolder'] })
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:FILENAME,parents:['appDataFolder']})
   });
-  driveFileId = created.id; localStorage.setItem(FIDKEY, driveFileId); return driveFileId;
+  driveFileId=created.id; localStorage.setItem(FIDKEY,driveFileId); return driveFileId;
 }
 async function loadFromDrive() {
   setSyncStatus('syncing', 'Loading...');
   try {
-    const fid = await findOrCreateFile();
-    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fid}?alt=media`, { headers: { Authorization: 'Bearer '+accessToken } });
-    if (res.ok) { const text = await res.text(); if (text && text.trim().startsWith('{')) { data = JSON.parse(text); if (!data.lists) data.lists=[]; if (!data.tasks) data.tasks=[]; lsSave(); } }
+    const fid = IS_BRAD ? driveFileId : await findOrCreateFile();
+    if (!fid) { setSyncStatus('err', 'No file ID'); return; }
+    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fid}?alt=media`, { headers:{Authorization:'Bearer '+accessToken} });
+    if (res.ok) {
+      const text = await res.text();
+      if (text && text.trim().startsWith('{')) { data=JSON.parse(text); if(!data.lists)data.lists=[]; if(!data.tasks)data.tasks=[]; lsSave(); }
+    }
     setSyncStatus('ok', 'Synced '+timeStr()); render();
-  } catch { setSyncStatus('err', 'Load failed'); }
+  } catch(e) { setSyncStatus('err', 'Load failed'); }
 }
 async function syncToDrive() {
-  if (!accessToken) { toast('Connect Drive first'); return; }
+  if (IS_BRAD || !accessToken) return;
   setSyncStatus('syncing', 'Saving...');
   try {
     const fid = await findOrCreateFile();
     await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fid}?uploadType=media`, {
-      method:'PATCH', headers:{ Authorization:'Bearer '+accessToken, 'Content-Type':'application/json' }, body: JSON.stringify(data)
+      method:'PATCH', headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'}, body:JSON.stringify(data)
     });
     setSyncStatus('ok', 'Saved '+timeStr());
   } catch { setSyncStatus('err', 'Sync failed'); }
 }
+
+// Show the Drive file ID to owner so they can share with Brad
+function showFileId() {
+  if (driveFileId) toast('File ID: ' + driveFileId);
+  else toast('Connect Drive first to see your file ID');
+}
+
 let syncTimer;
-function autoSync() { clearTimeout(syncTimer); syncTimer = setTimeout(() => { if (accessToken) syncToDrive(); }, 2000); }
+function autoSync() { if(IS_BRAD)return; clearTimeout(syncTimer); syncTimer=setTimeout(()=>{if(accessToken)syncToDrive();},2000); }
 
-function toast(msg) {
-  const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
+function toast(msg,dur=2500) {
+  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),dur);
 }
-function setSyncStatus(type, msg) {
-  const el = document.getElementById('sync-status'); el.textContent = msg;
-  el.className = 'sync-status'+(type==='ok'?' ok':type==='err'?' err':type==='syncing'?' syncing':'');
-}
-function toggleHelp() {
-  const el = document.getElementById('help-box');
-  el.style.display = el.style.display==='none'||!el.style.display ? 'block' : 'none';
+function setSyncStatus(type,msg) {
+  const el=document.getElementById('sync-status'); el.textContent=msg;
+  el.className='sync-status'+(type==='ok'?' ok':type==='err'?' err':type==='syncing'?' syncing':'');
 }
 
-document.getElementById('inp').addEventListener('keydown', e => { if (e.key==='Enter') addTask(); });
-document.getElementById('modal-list-name').addEventListener('keydown', e => { if (e.key==='Enter') saveList(); });
-document.getElementById('list-modal').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
+// Add "Show file ID" button for owner after connecting
+function postConnectUI() {
+  if (IS_BRAD) return;
+  const btn = document.getElementById('auth-btn');
+  if (btn && !document.getElementById('fileid-btn')) {
+    const fb = document.createElement('button');
+    fb.id='fileid-btn'; fb.className='btn'; fb.style.cssText='width:100%;justify-content:center;font-size:11px;padding:5px;margin-top:4px;';
+    fb.textContent='Show file ID for Brad'; fb.onclick=showFileId;
+    btn.parentNode.appendChild(fb);
+  }
+}
+
+document.getElementById('inp') && document.getElementById('inp').addEventListener('keydown', e=>{if(e.key==='Enter')addTask();});
+document.getElementById('modal-list-name').addEventListener('keydown', e=>{if(e.key==='Enter')saveList();});
+document.getElementById('list-modal').addEventListener('click', e=>{if(e.target===e.currentTarget)closeModal();});
 
 lsLoad();
-const savedCid = getClientId();
-if (savedCid) document.getElementById('setup-box').style.display = 'none';
-window.addEventListener('load', () => { loadGSI(); });
+renderSetupArea();
+window.addEventListener('load', ()=>{ loadGSI(); });
+// patch initGIS to show file ID button after auth
+const _origInitGIS = initGIS;
+// override callback to also call postConnectUI
+const _origHandleAuth = handleAuth;
+
 render();
 </script>
 </body>
