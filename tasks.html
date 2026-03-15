@@ -5,159 +5,593 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>My Tasks</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f7f6f2; --surface: #ffffff; --border: #e4e2da; --border-strong: #c8c5bc;
+  --text: #1a1916; --muted: #7a7870; --hint: #b0ada4;
+  --accent: #2a6df4; --accent-bg: #eef3fe; --accent-text: #1a4db0;
+  --success: #1a7a4a; --success-bg: #eaf5ee;
+  --danger: #c0392b; --danger-bg: #fdf0ee;
+  --warn-bg: #fef8e7;
+  --brad-bg: #f0eeff; --brad-text: #5b3fd4;
+  --caroline-bg: #fff0f5; --caroline-text: #b03070;
+  --urgent-bg: #fdf0ee; --urgent-text: #c0392b;
+  --radius: 10px; --radius-sm: 6px;
+}
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg: #f7f6f2; --surface: #ffffff; --border: #e4e2da; --border-strong: #c8c5bc;
-    --text: #1a1916; --muted: #7a7870; --hint: #b0ada4;
-    --accent: #2a6df4; --accent-bg: #eef3fe;
-    --success: #1a7a4a; --success-bg: #eaf5ee;
-    --danger: #c0392b; --danger-bg: #fdf0ee;
-    --warn-bg: #fef8e7;
-    --radius: 10px; --radius-sm: 6px;
+    --bg: #141412; --surface: #1e1d1b; --border: #2e2d29; --border-strong: #454340;
+    --text: #f0ede8; --muted: #8a8780; --hint: #5a5854;
+    --accent: #5b8ff9; --accent-bg: #1a2240; --accent-text: #5b8ff9;
+    --success: #4caf7a; --success-bg: #0e2a1c;
+    --danger: #e07060; --danger-bg: #2a1410;
+    --warn-bg: #2a2010;
+    --brad-bg: #1e1a35; --brad-text: #a990f5;
+    --caroline-bg: #2a1020; --caroline-text: #f080b0;
+    --urgent-bg: #2a1410; --urgent-text: #e07060;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #141412; --surface: #1e1d1b; --border: #2e2d29; --border-strong: #454340;
-      --text: #f0ede8; --muted: #8a8780; --hint: #5a5854;
-      --accent: #5b8ff9; --accent-bg: #1a2240;
-      --success: #4caf7a; --success-bg: #0e2a1c;
-      --danger: #e07060; --danger-bg: #2a1410;
-      --warn-bg: #2a2010;
-    }
-  }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
-  .container { max-width: 620px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 10px; }
-  .logo { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
-  .sync-row { display: flex; align-items: center; gap: 10px; }
-  .sync-status { font-size: 12px; color: var(--muted); }
-  .sync-status.ok { color: var(--success); }
-  .sync-status.err { color: var(--danger); }
-  .sync-status.syncing { color: var(--accent); }
-  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.1s; white-space: nowrap; font-family: inherit; }
-  .btn:hover { background: var(--bg); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn.primary:hover { opacity: 0.9; }
-  .btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
-  .btn.ghost:hover { color: var(--text); background: var(--border); }
-  .setup-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
-  .setup-box h2 { font-size: 15px; font-weight: 600; margin-bottom: 0.5rem; }
-  .setup-box p { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
-  .input-row { display: flex; gap: 8px; }
-  .input-row input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
-  .input-row input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
-  .help-box { display: none; background: var(--warn-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem; font-size: 13px; line-height: 1.8; color: var(--text); }
-  .help-box code { background: var(--bg); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.25rem; }
-  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
-  .stat-num { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
-  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 1px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .add-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
-  .add-row input[type="text"] { flex: 1; min-width: 160px; padding: 9px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-size: 14px; font-family: inherit; }
-  .add-row input[type="text"]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
-  .add-row select, .add-row input[type="date"] { padding: 9px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-size: 13px; cursor: pointer; font-family: inherit; }
-  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
-  .filter-btn { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.1s; font-family: inherit; }
-  .filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
-  .filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); }
-  .list { display: flex; flex-direction: column; gap: 5px; }
-  .item { display: flex; align-items: flex-start; gap: 10px; padding: 11px 13px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: opacity 0.15s; }
-  .item.done { opacity: 0.4; }
-  .check { width: 19px; height: 19px; border: 1.5px solid var(--border-strong); border-radius: 5px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all 0.1s; background: var(--bg); }
-  .check:hover { border-color: var(--accent); }
-  .check.checked { background: var(--success-bg); border-color: var(--success); }
-  .check svg { display: none; width: 11px; height: 11px; stroke: var(--success); stroke-width: 2.5; fill: none; }
-  .check.checked svg { display: block; }
-  .item-body { flex: 1; min-width: 0; }
-  .item-text { font-size: 14px; word-break: break-word; }
-  .item.done .item-text { text-decoration: line-through; color: var(--muted); }
-  .item-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
-  .tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
-  .tag-work { background: var(--accent-bg); color: var(--accent); }
-  .tag-personal { background: #f0eeff; color: #5b3fd4; }
-  .tag-urgent { background: var(--danger-bg); color: var(--danger); }
-  .due { font-size: 11px; color: var(--muted); }
-  .due.overdue { color: var(--danger); font-weight: 500; }
-  .item-actions { display: flex; gap: 2px; flex-shrink: 0; }
-  .icon-btn { width: 26px; height: 26px; border: none; background: transparent; color: var(--hint); cursor: pointer; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.1s; font-family: inherit; }
-  .icon-btn:hover { background: var(--bg); color: var(--danger); }
-  .empty { text-align: center; padding: 3rem 1rem; color: var(--hint); font-size: 14px; }
-  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: var(--radius); font-size: 13px; opacity: 0; transition: all 0.25s; pointer-events: none; z-index: 100; white-space: nowrap; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
+.app { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; display: flex; flex-direction: column; }
+.sidebar-logo { font-size: 17px; font-weight: 600; padding: 0 1.25rem 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem; }
+.sidebar-section { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--hint); padding: 0.5rem 1.25rem 0.25rem; }
+.list-item { display: flex; align-items: center; gap: 8px; padding: 7px 1.25rem; cursor: pointer; font-size: 13px; color: var(--muted); border-radius: 0; transition: background 0.1s; }
+.list-item:hover { background: var(--bg); color: var(--text); }
+.list-item.active { background: var(--accent-bg); color: var(--accent); font-weight: 500; }
+.list-item .count { margin-left: auto; font-size: 11px; background: var(--border); color: var(--muted); padding: 1px 6px; border-radius: 10px; }
+.list-item.active .count { background: var(--accent-bg); color: var(--accent); }
+.list-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; }
+.add-list-btn { margin: 0.5rem 1rem 0; padding: 6px 10px; border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; text-align: left; font-family: inherit; }
+.add-list-btn:hover { color: var(--text); border-color: var(--accent); }
+.sidebar-bottom { margin-top: auto; padding: 1rem 1.25rem 0; border-top: 1px solid var(--border); }
+.sync-status { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.sync-status.ok { color: var(--success); }
+.sync-status.err { color: var(--danger); }
+.sync-status.syncing { color: var(--accent); }
+
+/* Main */
+.main { flex: 1; min-width: 0; padding: 2rem 2rem 4rem; max-width: 720px; }
+.main-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px; }
+.main-title { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+.list-color-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; }
+.stat-num { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+.stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* Add task */
+.add-area { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+.add-row-1 { display: flex; gap: 8px; margin-bottom: 8px; }
+.add-row-1 input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; }
+.add-row-1 input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.add-row-2 { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.add-row-2 select, .add-row-2 input[type="date"] { padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; cursor: pointer; }
+.repeat-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.repeat-row input[type="number"] { width: 52px; padding: 6px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
+.repeat-row select { padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
+
+/* Filters */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+.filter-btn { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.1s; }
+.filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
+.filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+/* Task list */
+.list { display: flex; flex-direction: column; gap: 5px; }
+.item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: opacity 0.15s; }
+.item.done { opacity: 0.4; }
+.item-main { display: flex; align-items: flex-start; gap: 10px; padding: 11px 13px; }
+.check { width: 19px; height: 19px; border: 1.5px solid var(--border-strong); border-radius: 5px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 2px; background: var(--bg); transition: all 0.1s; }
+.check:hover { border-color: var(--accent); }
+.check.checked { background: var(--success-bg); border-color: var(--success); }
+.check svg { display: none; width: 11px; height: 11px; stroke: var(--success); stroke-width: 2.5; fill: none; }
+.check.checked svg { display: block; }
+.item-body { flex: 1; min-width: 0; }
+.item-text { font-size: 14px; word-break: break-word; }
+.item.done .item-text { text-decoration: line-through; color: var(--muted); }
+.item-meta { display: flex; align-items: center; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+.tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+.tag-urgent { background: var(--urgent-bg); color: var(--urgent-text); }
+.tag-brad { background: var(--brad-bg); color: var(--brad-text); }
+.tag-caroline { background: var(--caroline-bg); color: var(--caroline-text); }
+.tag-repeat { background: var(--accent-bg); color: var(--accent-text); }
+.due { font-size: 11px; color: var(--muted); }
+.due.overdue { color: var(--danger); font-weight: 500; }
+.item-actions { display: flex; gap: 2px; flex-shrink: 0; }
+.icon-btn { width: 28px; height: 28px; border: none; background: transparent; color: var(--hint); cursor: pointer; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-family: inherit; transition: all 0.1s; }
+.icon-btn:hover { background: var(--bg); color: var(--text); }
+.icon-btn.del:hover { color: var(--danger); }
+
+/* Edit form inline */
+.edit-area { border-top: 1px solid var(--border); padding: 10px 13px; display: none; flex-direction: column; gap: 8px; }
+.edit-area.open { display: flex; }
+.edit-area input[type="text"] { width: 100%; padding: 7px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
+.edit-area input[type="text"]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.edit-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.edit-row select, .edit-row input[type="date"] { padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
+.edit-row input[type="number"] { width: 52px; padding: 6px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 12px; font-family: inherit; }
+.edit-actions { display: flex; gap: 6px; }
+
+.btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.1s; white-space: nowrap; }
+.btn:hover { background: var(--bg); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { opacity: 0.9; }
+.btn.sm { padding: 5px 10px; font-size: 12px; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn.ghost:hover { color: var(--text); background: var(--border); }
+
+.empty { text-align: center; padding: 3rem 1rem; color: var(--hint); font-size: 14px; }
+.toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: var(--radius); font-size: 13px; opacity: 0; transition: all 0.25s; pointer-events: none; z-index: 100; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Modal */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 200; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; width: 320px; }
+.modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
+.modal input { width: 100%; padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; margin-bottom: 1rem; }
+.modal input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.color-picker { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+.color-opt { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.1s; }
+.color-opt:hover { transform: scale(1.15); }
+.color-opt.selected { border-color: var(--text); }
+
+/* Setup */
+.setup-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.25rem; }
+.setup-box h2 { font-size: 14px; font-weight: 600; margin-bottom: 0.4rem; }
+.setup-box p { font-size: 12px; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.6; }
+.input-row { display: flex; gap: 8px; }
+.input-row input { flex: 1; padding: 7px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
+.input-row input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+@media (max-width: 600px) {
+  .sidebar { width: 180px; }
+  .main { padding: 1.25rem 1rem 3rem; }
+}
+@media (max-width: 480px) {
+  .app { flex-direction: column; }
+  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; flex-direction: row; flex-wrap: wrap; overflow-x: auto; }
+  .sidebar-logo { padding: 0 1rem; border-bottom: none; margin-bottom: 0; display: flex; align-items: center; }
+  .sidebar-section { display: none; }
+  .list-item { white-space: nowrap; }
+  .sidebar-bottom { display: none; }
+  .main { padding: 1rem; }
+}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="app">
 
-  <header>
-    <div class="logo">My Tasks</div>
-    <div class="sync-row">
-      <span class="sync-status" id="sync-status">not connected</span>
-      <button class="btn" id="auth-btn" onclick="handleAuth()">Connect Drive</button>
-    </div>
-  </header>
-
-  <div class="setup-box" id="setup-box">
-    <h2>Connect to Google Drive</h2>
-    <p>Enter your Google OAuth Client ID to sync tasks across all your devices. Your tasks are saved as a private file only this app can access. <a href="#" onclick="toggleHelp(); return false;" style="color:var(--accent);">How to get a Client ID →</a></p>
-    <div class="input-row">
-      <input type="text" id="client-id-input" placeholder="Paste your OAuth Client ID here..." />
-      <button class="btn primary" onclick="saveClientId()">Save</button>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">My Tasks</div>
+    <div class="sidebar-section">Lists</div>
+    <div id="sidebar-lists"></div>
+    <button class="add-list-btn" onclick="openNewListModal()">+ New list</button>
+    <div class="sidebar-bottom">
+      <div class="sync-status" id="sync-status">not connected</div>
+      <button class="btn" id="auth-btn" onclick="handleAuth()" style="width:100%;justify-content:center;font-size:12px;padding:6px;">Connect Drive</button>
     </div>
   </div>
 
-  <div class="help-box" id="help-box">
-    <strong>Getting your Client ID (takes ~10 min, free):</strong><br><br>
-    1. Go to <a href="https://console.cloud.google.com" target="_blank" style="color:var(--accent);">console.cloud.google.com</a> and create a new project<br>
-    2. Go to <strong>APIs &amp; Services → Library</strong>, search <em>Google Drive API</em>, click Enable<br>
-    3. Go to <strong>APIs &amp; Services → OAuth consent screen</strong> → External → fill in app name → Save &amp; Continue through all steps<br>
-    4. Go to <strong>APIs &amp; Services → Credentials → Create Credentials → OAuth client ID</strong><br>
-    5. Application type: <strong>Web application</strong><br>
-    6. Under <em>Authorized JavaScript origins</em> add: <code>null</code> (for local files) or your hosted URL<br>
-    7. Click Create — copy the <strong>Client ID</strong> and paste it above<br><br>
-    <button class="btn ghost" onclick="toggleHelp()">Close</button>
-  </div>
+  <!-- Main -->
+  <div class="main">
+    <div id="setup-box" class="setup-box">
+      <h2>Connect to Google Drive</h2>
+      <p>Paste your OAuth Client ID to sync across devices. <a href="#" onclick="toggleHelp();return false;" style="color:var(--accent)">How to get one →</a></p>
+      <div class="input-row">
+        <input type="text" id="client-id-input" placeholder="Paste Client ID..." />
+        <button class="btn primary btn-sm" onclick="saveClientId()">Save</button>
+      </div>
+    </div>
+    <div id="help-box" style="display:none;background:var(--warn-bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;margin-bottom:1rem;font-size:12px;line-height:1.8;color:var(--text);">
+      1. <a href="https://console.cloud.google.com" target="_blank" style="color:var(--accent)">console.cloud.google.com</a> → create project<br>
+      2. APIs &amp; Services → Library → Enable <strong>Google Drive API</strong><br>
+      3. OAuth consent screen → External → fill name → Save<br>
+      4. Credentials → Create → OAuth client ID → Web app<br>
+      5. Authorized JS origins: your GitHub Pages URL<br>
+      6. Copy Client ID → paste above<br>
+      <button class="btn ghost" style="margin-top:8px;font-size:12px;" onclick="toggleHelp()">Close</button>
+    </div>
 
-  <div class="stats">
-    <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Total</div></div>
-    <div class="stat"><div class="stat-num" id="s-done">0</div><div class="stat-lbl">Done</div></div>
-    <div class="stat"><div class="stat-num" id="s-left">0</div><div class="stat-lbl">Remaining</div></div>
-  </div>
+    <div class="main-header">
+      <div class="main-title">
+        <div class="list-color-dot" id="active-dot"></div>
+        <span id="active-title">All Tasks</span>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn sm" id="rename-list-btn" style="display:none" onclick="openRenameModal()">Rename</button>
+        <button class="btn sm" id="delete-list-btn" style="display:none;color:var(--danger);border-color:var(--danger);" onclick="deleteCurrentList()">Delete list</button>
+      </div>
+    </div>
 
-  <div class="add-row">
-    <input type="text" id="inp" placeholder="Add a task..." maxlength="200" />
-    <select id="cat">
-      <option value="none">No tag</option>
-      <option value="work">Work</option>
-      <option value="personal">Personal</option>
-      <option value="urgent">Urgent</option>
-    </select>
-    <input type="date" id="due-inp" />
-    <button class="btn primary" onclick="addTask()">Add</button>
-  </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Total</div></div>
+      <div class="stat"><div class="stat-num" id="s-done">0</div><div class="stat-lbl">Done</div></div>
+      <div class="stat"><div class="stat-num" id="s-left">0</div><div class="stat-lbl">Remaining</div></div>
+    </div>
 
-  <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-    <button class="filter-btn" onclick="setFilter('active',this)">Active</button>
-    <button class="filter-btn" onclick="setFilter('done',this)">Done</button>
-    <button class="filter-btn" onclick="setFilter('urgent',this)">Urgent</button>
-    <button class="filter-btn" onclick="setFilter('work',this)">Work</button>
-    <button class="filter-btn" onclick="setFilter('personal',this)">Personal</button>
-    <button class="filter-btn" onclick="setFilter('due',this)">Due today</button>
-  </div>
+    <div class="add-area">
+      <div class="add-row-1">
+        <input type="text" id="inp" placeholder="Add a task..." maxlength="200" />
+        <button class="btn primary" onclick="addTask()">Add</button>
+      </div>
+      <div class="add-row-2">
+        <select id="add-list-sel"></select>
+        <select id="add-assign">
+          <option value="none">Unassigned</option>
+          <option value="brad">Brad</option>
+          <option value="caroline">Caroline</option>
+        </select>
+        <select id="add-urgent">
+          <option value="no">Not urgent</option>
+          <option value="yes">Urgent</option>
+        </select>
+        <input type="date" id="due-inp" title="Due date (optional)" />
+      </div>
+      <div class="add-row-2" style="margin-top:6px;">
+        <div class="repeat-row">
+          <span>Repeat every</span>
+          <input type="number" id="rep-num" min="1" max="365" placeholder="—" />
+          <select id="rep-unit">
+            <option value="none">— no repeat —</option>
+            <option value="days">days</option>
+            <option value="weeks">weeks</option>
+            <option value="months">months</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-  <div class="list" id="list"></div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('active',this)">Active</button>
+      <button class="filter-btn" onclick="setFilter('done',this)">Done</button>
+      <button class="filter-btn" onclick="setFilter('urgent',this)">Urgent</button>
+      <button class="filter-btn" onclick="setFilter('brad',this)">Brad</button>
+      <button class="filter-btn" onclick="setFilter('caroline',this)">Caroline</button>
+      <button class="filter-btn" onclick="setFilter('due',this)">Due today</button>
+      <button class="filter-btn" onclick="setFilter('repeat',this)">Repeating</button>
+    </div>
+
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<!-- New/Rename list modal -->
+<div class="modal-overlay" id="list-modal">
+  <div class="modal">
+    <h3 id="modal-title">New list</h3>
+    <input type="text" id="modal-list-name" placeholder="List name..." maxlength="40" />
+    <div class="color-picker" id="color-picker"></div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="saveList()">Save</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const LSKEY = 'mytasks_v2', CIDKEY = 'mytasks_clientid', FIDKEY = 'mytasks_fileid';
-const SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
-const FILENAME = 'mytasks_data.json';
-let tasks = [], filter = 'all', tokenClient, accessToken = null, driveFileId = null;
-let gsiReady = false;
+const LSKEY='mytasks_v3', CIDKEY='mytasks_clientid', FIDKEY='mytasks_fileid';
+const SCOPE='https://www.googleapis.com/auth/drive.appdata';
+const FILENAME='mytasks_data_v3.json';
+const COLORS=['#5b8ff9','#1a7a4a','#e07060','#8b5cf6','#e09030','#0e8080','#c03070','#888780'];
 
+let data = { lists: [], tasks: [] };
+let activeList = 'all';
+let filter = 'all';
+let tokenClient, accessToken = null, driveFileId = null;
+let gsiReady = false;
+let editingListColor = COLORS[0];
+let modalMode = 'new';
+
+/* ── storage ── */
+function lsLoad() {
+  try {
+    const raw = localStorage.getItem(LSKEY);
+    if (raw) data = JSON.parse(raw);
+    if (!data.lists) data.lists = [];
+    if (!data.tasks) data.tasks = [];
+  } catch { data = { lists: [], tasks: [] }; }
+  driveFileId = localStorage.getItem(FIDKEY) || null;
+}
+function lsSave() { localStorage.setItem(LSKEY, JSON.stringify(data)); }
+function getClientId() { return localStorage.getItem(CIDKEY) || ''; }
+
+/* ── lists ── */
+function openNewListModal() {
+  modalMode = 'new';
+  document.getElementById('modal-title').textContent = 'New list';
+  document.getElementById('modal-list-name').value = '';
+  editingListColor = COLORS[0];
+  renderColorPicker();
+  document.getElementById('list-modal').classList.add('open');
+  setTimeout(() => document.getElementById('modal-list-name').focus(), 100);
+}
+function openRenameModal() {
+  const lst = data.lists.find(l => l.id === activeList);
+  if (!lst) return;
+  modalMode = 'rename';
+  document.getElementById('modal-title').textContent = 'Rename list';
+  document.getElementById('modal-list-name').value = lst.name;
+  editingListColor = lst.color || COLORS[0];
+  renderColorPicker();
+  document.getElementById('list-modal').classList.add('open');
+  setTimeout(() => document.getElementById('modal-list-name').focus(), 100);
+}
+function closeModal() { document.getElementById('list-modal').classList.remove('open'); }
+function renderColorPicker() {
+  document.getElementById('color-picker').innerHTML = COLORS.map(c =>
+    `<div class="color-opt${c===editingListColor?' selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`
+  ).join('');
+}
+function pickColor(c) { editingListColor = c; renderColorPicker(); }
+function saveList() {
+  const name = document.getElementById('modal-list-name').value.trim();
+  if (!name) return;
+  if (modalMode === 'new') {
+    const id = 'list_' + Date.now();
+    data.lists.push({ id, name, color: editingListColor });
+    activeList = id;
+  } else {
+    const lst = data.lists.find(l => l.id === activeList);
+    if (lst) { lst.name = name; lst.color = editingListColor; }
+  }
+  closeModal();
+  lsSave(); autoSync(); renderSidebar(); render();
+}
+function deleteCurrentList() {
+  if (!confirm('Delete this list and all its tasks?')) return;
+  data.tasks = data.tasks.filter(t => t.listId !== activeList);
+  data.lists = data.lists.filter(l => l.id !== activeList);
+  activeList = 'all';
+  lsSave(); autoSync(); renderSidebar(); render();
+}
+
+/* ── tasks ── */
+function addTask() {
+  const v = document.getElementById('inp').value.trim();
+  if (!v) return;
+  const repNum = parseInt(document.getElementById('rep-num').value) || 0;
+  const repUnit = document.getElementById('rep-unit').value;
+  const listSel = document.getElementById('add-list-sel').value;
+  const task = {
+    id: Date.now(),
+    text: v,
+    listId: listSel || (activeList !== 'all' ? activeList : (data.lists[0] ? data.lists[0].id : 'default')),
+    assign: document.getElementById('add-assign').value,
+    urgent: document.getElementById('add-urgent').value === 'yes',
+    due: document.getElementById('due-inp').value,
+    repeat: (repNum > 0 && repUnit !== 'none') ? { num: repNum, unit: repUnit } : null,
+    done: false
+  };
+  data.tasks.unshift(task);
+  lsSave(); autoSync(); render();
+  document.getElementById('inp').value = '';
+  document.getElementById('due-inp').value = '';
+  document.getElementById('rep-num').value = '';
+  document.getElementById('rep-unit').value = 'none';
+  document.getElementById('add-urgent').value = 'no';
+  document.getElementById('add-assign').value = 'none';
+}
+
+function toggle(id) {
+  const t = data.tasks.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  // if repeating and just completed, schedule next
+  if (t.done && t.repeat && t.due) {
+    const next = nextDueDate(t.due, t.repeat);
+    const newTask = { ...t, id: Date.now() + 1, done: false, due: next };
+    data.tasks.unshift(newTask);
+    toast('Next occurrence scheduled: ' + fmtDate(next));
+  }
+  lsSave(); autoSync(); render();
+}
+
+function nextDueDate(from, repeat) {
+  const d = new Date(from + 'T00:00:00');
+  if (repeat.unit === 'days') d.setDate(d.getDate() + repeat.num);
+  else if (repeat.unit === 'weeks') d.setDate(d.getDate() + repeat.num * 7);
+  else if (repeat.unit === 'months') d.setMonth(d.getMonth() + repeat.num);
+  return d.toISOString().slice(0, 10);
+}
+
+function del(id) {
+  data.tasks = data.tasks.filter(x => x.id !== id);
+  lsSave(); autoSync(); render();
+}
+
+function openEdit(id) {
+  const area = document.getElementById('edit-' + id);
+  if (!area) return;
+  const isOpen = area.classList.contains('open');
+  document.querySelectorAll('.edit-area.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) area.classList.add('open');
+}
+
+function saveEdit(id) {
+  const t = data.tasks.find(x => x.id === id);
+  if (!t) return;
+  t.text = document.getElementById('edit-text-' + id).value.trim() || t.text;
+  t.assign = document.getElementById('edit-assign-' + id).value;
+  t.urgent = document.getElementById('edit-urgent-' + id).value === 'yes';
+  t.due = document.getElementById('edit-due-' + id).value;
+  t.listId = document.getElementById('edit-list-' + id).value;
+  const repNum = parseInt(document.getElementById('edit-rep-num-' + id).value) || 0;
+  const repUnit = document.getElementById('edit-rep-unit-' + id).value;
+  t.repeat = (repNum > 0 && repUnit !== 'none') ? { num: repNum, unit: repUnit } : null;
+  lsSave(); autoSync(); render();
+  toast('Task updated');
+}
+
+/* ── filter & render ── */
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); render();
+}
+
+function setActiveList(id) {
+  activeList = id; filter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn').classList.add('active');
+  renderSidebar(); render();
+}
+
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function timeStr() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+function getVisibleTasks() {
+  let vis = data.tasks;
+  if (activeList !== 'all') vis = vis.filter(t => t.listId === activeList);
+  const today = todayStr();
+  if (filter === 'active') vis = vis.filter(t => !t.done);
+  else if (filter === 'done') vis = vis.filter(t => t.done);
+  else if (filter === 'urgent') vis = vis.filter(t => t.urgent);
+  else if (filter === 'brad') vis = vis.filter(t => t.assign === 'brad');
+  else if (filter === 'caroline') vis = vis.filter(t => t.assign === 'caroline');
+  else if (filter === 'due') vis = vis.filter(t => t.due && t.due <= today && !t.done);
+  else if (filter === 'repeat') vis = vis.filter(t => t.repeat);
+  return vis;
+}
+
+function renderSidebar() {
+  const countAll = data.tasks.filter(t => !t.done).length;
+  let html = `<div class="list-item${activeList==='all'?' active':''}" onclick="setActiveList('all')">
+    <div class="list-dot" style="background:#888"></div> All Tasks
+    <span class="count">${countAll}</span>
+  </div>`;
+  data.lists.forEach(l => {
+    const cnt = data.tasks.filter(t => t.listId === l.id && !t.done).length;
+    html += `<div class="list-item${activeList===l.id?' active':''}" onclick="setActiveList('${l.id}')">
+      <div class="list-dot" style="background:${l.color||'#888'}"></div>
+      ${esc(l.name)} <span class="count">${cnt}</span>
+    </div>`;
+  });
+  document.getElementById('sidebar-lists').innerHTML = html;
+
+  // update active title
+  if (activeList === 'all') {
+    document.getElementById('active-title').textContent = 'All Tasks';
+    document.getElementById('active-dot').style.background = '#888';
+    document.getElementById('rename-list-btn').style.display = 'none';
+    document.getElementById('delete-list-btn').style.display = 'none';
+  } else {
+    const lst = data.lists.find(l => l.id === activeList);
+    if (lst) {
+      document.getElementById('active-title').textContent = lst.name;
+      document.getElementById('active-dot').style.background = lst.color || '#888';
+    }
+    document.getElementById('rename-list-btn').style.display = '';
+    document.getElementById('delete-list-btn').style.display = '';
+  }
+
+  // update add-list select
+  const sel = document.getElementById('add-list-sel');
+  const curVal = sel.value;
+  sel.innerHTML = data.lists.map(l => `<option value="${l.id}">${esc(l.name)}</option>`).join('') ||
+    '<option value="default">Default</option>';
+  if (activeList !== 'all') sel.value = activeList;
+  else if (curVal) sel.value = curVal;
+}
+
+function render() {
+  renderSidebar();
+  const today = todayStr();
+  const vis = getVisibleTasks();
+  const allInView = activeList === 'all' ? data.tasks : data.tasks.filter(t => t.listId === activeList);
+  const done = allInView.filter(t => t.done).length;
+  document.getElementById('s-total').textContent = allInView.length;
+  document.getElementById('s-done').textContent = done;
+  document.getElementById('s-left').textContent = allInView.length - done;
+
+  const el = document.getElementById('list');
+  if (!vis.length) { el.innerHTML = '<div class="empty">Nothing here</div>'; return; }
+
+  el.innerHTML = vis.map(t => {
+    const overdue = t.due && t.due < today && !t.done;
+    const dueLabel = t.due ? `<span class="due${overdue?' overdue':''}">${overdue?'Overdue · ':''}${fmtDate(t.due)}</span>` : '';
+    const urgTag = t.urgent ? `<span class="tag tag-urgent">urgent</span>` : '';
+    const assignTag = t.assign === 'brad' ? `<span class="tag tag-brad">Brad</span>` :
+                      t.assign === 'caroline' ? `<span class="tag tag-caroline">Caroline</span>` : '';
+    const repTag = t.repeat ? `<span class="tag tag-repeat">every ${t.repeat.num} ${t.repeat.unit}</span>` : '';
+    const listName = activeList === 'all' ? (() => { const l = data.lists.find(x => x.id === t.listId); return l ? `<span style="font-size:11px;color:var(--muted);">${esc(l.name)}</span>` : ''; })() : '';
+    const repNumVal = t.repeat ? t.repeat.num : '';
+    const repUnitVal = t.repeat ? t.repeat.unit : 'none';
+    const listOpts = data.lists.map(l => `<option value="${l.id}"${l.id===t.listId?' selected':''}>${esc(l.name)}</option>`).join('') || `<option value="default">Default</option>`;
+
+    return `<div class="item${t.done?' done':''}" id="item-${t.id}">
+      <div class="item-main">
+        <div class="check${t.done?' checked':''}" onclick="toggle(${t.id})">
+          <svg viewBox="0 0 12 9"><polyline points="1,5 4,8 11,1"/></svg>
+        </div>
+        <div class="item-body">
+          <div class="item-text">${esc(t.text)}</div>
+          <div class="item-meta">${urgTag}${assignTag}${repTag}${dueLabel}${listName}</div>
+        </div>
+        <div class="item-actions">
+          <button class="icon-btn" onclick="openEdit(${t.id})" title="Edit">✎</button>
+          <button class="icon-btn del" onclick="del(${t.id})" title="Delete">×</button>
+        </div>
+      </div>
+      <div class="edit-area" id="edit-${t.id}">
+        <input type="text" id="edit-text-${t.id}" value="${esc(t.text)}" />
+        <div class="edit-row">
+          <select id="edit-list-${t.id}">${listOpts}</select>
+          <select id="edit-assign-${t.id}">
+            <option value="none"${t.assign==='none'||!t.assign?' selected':''}>Unassigned</option>
+            <option value="brad"${t.assign==='brad'?' selected':''}>Brad</option>
+            <option value="caroline"${t.assign==='caroline'?' selected':''}>Caroline</option>
+          </select>
+          <select id="edit-urgent-${t.id}">
+            <option value="no"${!t.urgent?' selected':''}>Not urgent</option>
+            <option value="yes"${t.urgent?' selected':''}>Urgent</option>
+          </select>
+          <input type="date" id="edit-due-${t.id}" value="${t.due||''}" />
+        </div>
+        <div class="edit-row">
+          <span style="font-size:12px;color:var(--muted);">Repeat every</span>
+          <input type="number" id="edit-rep-num-${t.id}" min="1" max="365" value="${repNumVal}" placeholder="—" />
+          <select id="edit-rep-unit-${t.id}">
+            <option value="none"${repUnitVal==='none'?' selected':''}>— no repeat —</option>
+            <option value="days"${repUnitVal==='days'?' selected':''}>days</option>
+            <option value="weeks"${repUnitVal==='weeks'?' selected':''}>weeks</option>
+            <option value="months"${repUnitVal==='months'?' selected':''}>months</option>
+          </select>
+        </div>
+        <div class="edit-actions">
+          <button class="btn sm primary" onclick="saveEdit(${t.id})">Save</button>
+          <button class="btn sm ghost" onclick="openEdit(${t.id})">Cancel</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function fmtDate(d) {
+  const [y, m, day] = d.split('-');
+  return new Date(+y, +m-1, +day).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' });
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── Drive ── */
+function saveClientId() {
+  const v = document.getElementById('client-id-input').value.trim();
+  if (!v) { toast('Paste a Client ID first'); return; }
+  localStorage.setItem(CIDKEY, v);
+  document.getElementById('setup-box').style.display = 'none';
+  toast('Client ID saved — click Connect Drive');
+  loadGSI();
+}
 function loadGSI() {
   const s = document.createElement('script');
   s.src = 'https://accounts.google.com/gsi/client';
@@ -165,23 +599,6 @@ function loadGSI() {
   s.onerror = () => setSyncStatus('err', 'Failed to load Google');
   document.head.appendChild(s);
 }
-
-function lsLoad() {
-  try { tasks = JSON.parse(localStorage.getItem(LSKEY) || '[]'); } catch { tasks = []; }
-  driveFileId = localStorage.getItem(FIDKEY) || null;
-}
-function lsSave() { localStorage.setItem(LSKEY, JSON.stringify(tasks)); }
-function getClientId() { return localStorage.getItem(CIDKEY) || ''; }
-
-function saveClientId() {
-  const v = document.getElementById('client-id-input').value.trim();
-  if (!v) { toast('Paste a Client ID first'); return; }
-  localStorage.setItem(CIDKEY, v);
-  document.getElementById('setup-box').style.display = 'none';
-  toast('Client ID saved — click Connect Drive');
-  initGIS();
-}
-
 function initGIS() {
   const cid = getClientId();
   if (!cid || !window.google) return;
@@ -196,7 +613,6 @@ function initGIS() {
     }
   });
 }
-
 function handleAuth() {
   if (!getClientId()) { toast('Add your Client ID first'); return; }
   if (accessToken) { syncToDrive(); return; }
@@ -205,162 +621,72 @@ function handleAuth() {
     let attempts = 0;
     const wait = setInterval(() => {
       attempts++;
-      if (gsiReady && window.google) {
-        clearInterval(wait);
-        if (!tokenClient) initGIS();
-        setTimeout(() => tokenClient.requestAccessToken(), 200);
-      } else if (attempts > 20) {
-        clearInterval(wait);
-        setSyncStatus('err', 'Could not load Google — check connection');
-      }
+      if (gsiReady && window.google) { clearInterval(wait); if (!tokenClient) initGIS(); setTimeout(() => tokenClient.requestAccessToken(), 200); }
+      else if (attempts > 20) { clearInterval(wait); setSyncStatus('err', 'Could not load Google'); }
     }, 300);
     return;
   }
   if (!tokenClient) initGIS();
   tokenClient.requestAccessToken();
 }
-
-async function driveReq(url, opts = {}) {
-  const res = await fetch(url, { ...opts, headers: { Authorization: 'Bearer ' + accessToken, ...(opts.headers || {}) } });
+async function driveReq(url, opts={}) {
+  const res = await fetch(url, { ...opts, headers: { Authorization: 'Bearer '+accessToken, ...(opts.headers||{}) } });
   if (!res.ok) throw new Error(res.status);
   return res.json();
 }
-
 async function findOrCreateFile() {
   if (driveFileId) return driveFileId;
   const q = `name='${FILENAME}' and 'appDataFolder' in parents and trashed=false`;
   const list = await driveReq(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${encodeURIComponent(q)}&fields=files(id)`);
-  if (list.files && list.files.length) {
-    driveFileId = list.files[0].id;
-    localStorage.setItem(FIDKEY, driveFileId);
-    return driveFileId;
-  }
+  if (list.files && list.files.length) { driveFileId = list.files[0].id; localStorage.setItem(FIDKEY, driveFileId); return driveFileId; }
   const created = await driveReq('https://www.googleapis.com/drive/v3/files?fields=id', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: FILENAME, parents: ['appDataFolder'] })
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: FILENAME, parents: ['appDataFolder'] })
   });
-  driveFileId = created.id;
-  localStorage.setItem(FIDKEY, driveFileId);
-  return driveFileId;
+  driveFileId = created.id; localStorage.setItem(FIDKEY, driveFileId); return driveFileId;
 }
-
 async function loadFromDrive() {
   setSyncStatus('syncing', 'Loading...');
   try {
     const fid = await findOrCreateFile();
-    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fid}?alt=media`, {
-      headers: { Authorization: 'Bearer ' + accessToken }
-    });
-    if (res.ok) {
-      const text = await res.text();
-      if (text && text.trim().startsWith('[')) { tasks = JSON.parse(text); lsSave(); }
-    }
-    setSyncStatus('ok', 'Synced ' + timeStr());
-    render();
+    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fid}?alt=media`, { headers: { Authorization: 'Bearer '+accessToken } });
+    if (res.ok) { const text = await res.text(); if (text && text.trim().startsWith('{')) { data = JSON.parse(text); if (!data.lists) data.lists=[]; if (!data.tasks) data.tasks=[]; lsSave(); } }
+    setSyncStatus('ok', 'Synced '+timeStr()); render();
   } catch { setSyncStatus('err', 'Load failed'); }
 }
-
 async function syncToDrive() {
   if (!accessToken) { toast('Connect Drive first'); return; }
   setSyncStatus('syncing', 'Saving...');
   try {
     const fid = await findOrCreateFile();
     await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fid}?uploadType=media`, {
-      method: 'PATCH',
-      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-      body: JSON.stringify(tasks)
+      method:'PATCH', headers:{ Authorization:'Bearer '+accessToken, 'Content-Type':'application/json' }, body: JSON.stringify(data)
     });
-    setSyncStatus('ok', 'Saved ' + timeStr());
-    toast('Synced to Drive ✓');
+    setSyncStatus('ok', 'Saved '+timeStr());
   } catch { setSyncStatus('err', 'Sync failed'); }
 }
-
 let syncTimer;
 function autoSync() { clearTimeout(syncTimer); syncTimer = setTimeout(() => { if (accessToken) syncToDrive(); }, 2000); }
 
-function addTask() {
-  const v = document.getElementById('inp').value.trim();
-  if (!v) return;
-  tasks.unshift({ id: Date.now(), text: v, cat: document.getElementById('cat').value, due: document.getElementById('due-inp').value, done: false });
-  lsSave(); render(); autoSync();
-  document.getElementById('inp').value = '';
-  document.getElementById('due-inp').value = '';
-}
-function toggle(id) { const t = tasks.find(x => x.id === id); if (t) t.done = !t.done; lsSave(); render(); autoSync(); }
-function del(id) { tasks = tasks.filter(x => x.id !== id); lsSave(); render(); autoSync(); }
-
-function setFilter(f, btn) {
-  filter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active'); render();
-}
-
-function todayStr() { return new Date().toISOString().slice(0, 10); }
-function timeStr() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
-
-function render() {
-  const done = tasks.filter(t => t.done).length;
-  document.getElementById('s-total').textContent = tasks.length;
-  document.getElementById('s-done').textContent = done;
-  document.getElementById('s-left').textContent = tasks.length - done;
-  const today = todayStr();
-  let vis = tasks;
-  if (filter === 'active') vis = tasks.filter(t => !t.done);
-  else if (filter === 'done') vis = tasks.filter(t => t.done);
-  else if (filter === 'urgent') vis = tasks.filter(t => t.cat === 'urgent');
-  else if (filter === 'work') vis = tasks.filter(t => t.cat === 'work');
-  else if (filter === 'personal') vis = tasks.filter(t => t.cat === 'personal');
-  else if (filter === 'due') vis = tasks.filter(t => t.due && t.due <= today && !t.done);
-  const el = document.getElementById('list');
-  if (!vis.length) { el.innerHTML = '<div class="empty">Nothing here</div>'; return; }
-  el.innerHTML = vis.map(t => {
-    const overdue = t.due && t.due < today && !t.done;
-    const dueLabel = t.due ? `<span class="due${overdue ? ' overdue' : ''}">${overdue ? 'Overdue · ' : ''}${fmtDate(t.due)}</span>` : '';
-    const tagHtml = t.cat && t.cat !== 'none' ? `<span class="tag tag-${t.cat}">${t.cat}</span>` : '';
-    return `<div class="item${t.done ? ' done' : ''}">
-      <div class="check${t.done ? ' checked' : ''}" onclick="toggle(${t.id})">
-        <svg viewBox="0 0 12 9"><polyline points="1,5 4,8 11,1"/></svg>
-      </div>
-      <div class="item-body">
-        <div class="item-text">${esc(t.text)}</div>
-        ${tagHtml || dueLabel ? `<div class="item-meta">${tagHtml}${dueLabel}</div>` : ''}
-      </div>
-      <div class="item-actions">
-        <button class="icon-btn" onclick="del(${t.id})" title="Delete">×</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function fmtDate(d) {
-  const [y, m, day] = d.split('-');
-  return new Date(+y, +m - 1, +day).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' });
-}
-function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
 function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
+  const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
 }
 function setSyncStatus(type, msg) {
-  const el = document.getElementById('sync-status');
-  el.textContent = msg;
-  el.className = 'sync-status' + (type === 'ok' ? ' ok' : type === 'err' ? ' err' : type === 'syncing' ? ' syncing' : '');
+  const el = document.getElementById('sync-status'); el.textContent = msg;
+  el.className = 'sync-status'+(type==='ok'?' ok':type==='err'?' err':type==='syncing'?' syncing':'');
 }
 function toggleHelp() {
   const el = document.getElementById('help-box');
-  el.style.display = el.style.display === 'none' || !el.style.display ? 'block' : 'none';
+  el.style.display = el.style.display==='none'||!el.style.display ? 'block' : 'none';
 }
 
-document.getElementById('inp').addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
+document.getElementById('inp').addEventListener('keydown', e => { if (e.key==='Enter') addTask(); });
+document.getElementById('modal-list-name').addEventListener('keydown', e => { if (e.key==='Enter') saveList(); });
+document.getElementById('list-modal').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
 
 lsLoad();
 const savedCid = getClientId();
-if (savedCid) {
-  document.getElementById('setup-box').style.display = 'none';
-  document.getElementById('client-id-input').value = savedCid;
-}
+if (savedCid) document.getElementById('setup-box').style.display = 'none';
 window.addEventListener('load', () => { loadGSI(); });
 render();
 </script>
